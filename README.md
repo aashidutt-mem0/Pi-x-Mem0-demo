@@ -77,33 +77,6 @@ Two correctness details worth knowing:
 - In the Mem0 SDK, `add()` takes `user_id=` as a direct argument while
   `search()` / `get_all()` scope via `filters=`. The bridge follows that exactly.
 
-## Demo-day talk track (about 2 minutes)
-
-1. Open the existing schema expander. "This is the house style. Note the PK is
-   `order_id`, money is `total_cents`, deletes are soft."
-2. Run. The no-memory migration comes back with `SERIAL id`, `DECIMAL amount`,
-   `ON DELETE CASCADE`, no down migration. "Every one of these is wrong here,
-   and every one is what a fresh agent guesses."
-3. Point at the with-Mem0 column: it matches the existing tables. The checker
-   reads 6/6 versus 1/6 or 0/6.
-4. "Same fresh process, same task. The only difference is a memory layer that
-   lives outside the model. The win is correct code, not a remembered fact."
-
-## Honest caveats (say them)
-
-- The no-memory run is made deterministic by stripping the key for that call,
-  and Session 1's decision is mirrored into the project scope after the run so
-  the before/after is stable in front of an audience. In normal use the
-  plugin's auto-capture handles this asynchronously.
-- The checker is a transparent regex scorer, a demo aid, not a SQL linter.
-  Model output varies; it scores whatever SQL it can extract from a fenced block.
-- Extraction costs an LLM call, so memory is not free or instant. For a tiny
-  one-table project a plain schema doc is cheaper. Memory earns its keep as the
-  conventions and history grow.
-- Naive memory can persist stale or contradictory conventions; that is what the
-  plugin's `/mem0-dream` consolidation and `/mem0-pin` are for - a natural
-  follow-up demo.
-
 ## Reset between runs
 
 Sidebar "Reset project memory" wipes the project scope for a clean cold start.
